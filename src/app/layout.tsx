@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider"
 import { Inter as FontSans } from "next/font/google"
 import { cn } from "@/lib/utils"
+import { getStaticPaths } from "next/dist/build/templates/pages";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -31,6 +32,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  function Gomain() {
+    
+  }
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body

@@ -1,24 +1,33 @@
 import Image from "next/image"
-import Link from "next/link"
+
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import axios from "axios"
+import { useRef } from "react"
+import { Rgwindow } from './rgwindow';
 
-// function login(params:FormData):undefined {
-//   axios.post("http://localhost:8080/user/login").then(r=>{
-//     console.log(r)
-//   }).catch(e=>{
-//     console.log(e)
-//   })
 
-// }
 
 export function LoginForm() {
 
-  var account=new FormData()
-  account.append("username","1546860437")
-  account.append("password","wz199744")
+  var username:any=useRef(null)   
+  var password:any=useRef(null)
+  
+  
+
+  const log=async ()=>{
+    var account=new FormData()
+    
+    account.append("username",username.current.value)
+    account.append("password",password.current.value)
+    console.log(account)
+    const r= await axios.post("http://localhost:8080/user/login",account)
+      console.log(r)
+}
+
+  
+ 
   return (
     <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px] h-full">
     <div className="flex items-center justify-center py-12">
@@ -33,9 +42,10 @@ export function LoginForm() {
           <div className="grid gap-2">
             <Label htmlFor="email">Username</Label>
             <Input
-              id="email"
-              type="email"
+              id="username"
+              type="text"
               placeholder="Enter your username"
+              ref={username}
               required
             />
           </div>
@@ -53,14 +63,13 @@ export function LoginForm() {
 
 
             </div>
-            <Input id="password" type="password" required />
+            <Input id="password" type="password" required  ref={password} />
           </div>
-          <Button className="w-full">
+          <Button className="w-full" onClick={log} type="submit">
             Login
           </Button>
-          <Button variant="outline" className="w-full">
-            Register
-          </Button>
+          <div className="w-full"> <Rgwindow></Rgwindow></div>
+          
         </div>
 
       </div>
