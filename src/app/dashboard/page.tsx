@@ -1,9 +1,15 @@
+"use client"
 import React from 'react'
 
 export default function Page() {
+ 
+
+
   return (
     <div>
-      qwe
+      This is MainPage
+     
+    
     </div>
   )
 }

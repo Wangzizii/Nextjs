@@ -1,30 +1,47 @@
+"use client"
 import Image from "next/image"
-
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import axios from "axios"
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import { Rgwindow } from './rgwindow';
-
+import { useRouter} from 'next/navigation'
 
 
 export function LoginForm() {
-
+  const Router=useRouter()
   var username:any=useRef(null)   
   var password:any=useRef(null)
-  
-  
 
+  useEffect(()=>{
+
+  })
   const log=async ()=>{
     var account=new FormData()
     
     account.append("username",username.current.value)
     account.append("password",password.current.value)
     console.log(account)
-    const r= await axios.post("http://localhost:8080/user/login",account)
+    const r= await axios.post(process.env.HOST+"/user/login",account)
       console.log(r)
+      if(r.data.code==200){
+        try {
+          typeof window !== "undefined" ? window.localStorage.setItem('token',r.data.data) : false
+          
+        } catch (error) {
+          
+        }
+     
+       
+
+        Router.push('/dashboard/settings')
+      }
 }
+  
+  
+
+  
 
   
  

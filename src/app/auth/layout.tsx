@@ -3,50 +3,13 @@ import Link from "next/link"
 import { CircleUser, Menu, Package2, Search } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { useRouter } from "next/navigation"
-import axios from "axios"
-import { useEffect } from "react"
 export default function Page({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const Router=useRouter()
-
-  useEffect(() => {
-    
-  
-    axios.post(process.env.HOST+"/user/checklogin",{},{
-      headers:{
-        "Authorization":window.localStorage.getItem("token")
-      }
-    }).then(r=>{
-      const  islogin=r.data
-      console.log(islogin)
-      if(islogin.code!=200){
-        Router.push("/login")
-      }
-      
-    }).catch(e=>{
-     
-        Router.push("/login")
-      
-    })
-  }, []);
- 
-
-  
   return (
     <div className="flex min-h-screen w-full flex-col">
       <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
@@ -55,34 +18,10 @@ export default function Page({
             href="#"
             className="flex items-center gap-2 text-lg font-semibold md:text-base"
           >
-            {/* <Package2 className="h-6 w-6" /> */}
             WzInSGP
             <span className="sr-only">Acme Inc</span>
           </Link>
-          <Link
-            href="#"
-            className="text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Orders
-          </Link>
-          <Link
-            href="/dashboard/products"
-            className="text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Products
-          </Link>
-          <Link
-            href="#"
-            className="text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Customers
-          </Link>
-          <Link
-            href="/dashboard/settings"
-            className="text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Settings
-          </Link>
+         
         </nav>
         <Sheet>
           <SheetTrigger asChild>
@@ -101,14 +40,9 @@ export default function Page({
                 href="#"
                 className="flex items-center gap-2 text-lg font-semibold"
               >
-                <Package2 className="h-6 w-6" />
+                {/* <Package2 className="h-6 w-6" /> */}
+                WzInSGP
                 <span className="sr-only">Acme Inc</span>
-              </Link>
-              <Link
-                href="#"
-                className="text-muted-foreground hover:text-foreground"
-              >
-                Dashboard
               </Link>
               <Link
                 href="#"
@@ -145,22 +79,7 @@ export default function Page({
               />
             </div>
           </form>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="secondary" size="icon" className="rounded-full">
-                <CircleUser className="h-5 w-5" />
-                <span className="sr-only">Toggle user menu</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+       
         </div>
       </header>
       <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
