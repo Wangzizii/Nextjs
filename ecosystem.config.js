@@ -12,8 +12,9 @@ module.exports = {
       repo : 'git@github.com:Wangzizii/Nextjs.git',
       path : '/home/bitnami',
       'pre-deploy-local': '',
+      'post-setup':'eval `ssh-agent -s` && ssh-add /home/bitnami/id_rsa',
       'post-deploy' : 'source ~/.nvm/nvm.sh && npm install && npm run build && pm2 reload ecosystem.config.js --env production',
-      'pre-setup': '',
+      'pre-setup': 'eval `ssh-agent -s` && ssh-add /home/bitnami/id_rsa',
       'ssh-options':'ForwardAgent=yes'
     }
   }
