@@ -24,9 +24,12 @@ export default function Page({
 }>) {
   const Router=useRouter()
 
+  const logout=()=>{
+    localStorage.removeItem("token")
+    Router.push("/login")
+  }
+
   useEffect(() => {
-    
-  
     axios.post(process.env.HOST+"/user/checklogin",{},{
       headers:{
         "Authorization":window.localStorage.getItem("token")
@@ -158,7 +161,7 @@ export default function Page({
               <DropdownMenuItem>Settings</DropdownMenuItem>
               <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider"
 import { Inter as FontSans } from "next/font/google"
 import { cn } from "@/lib/utils"
+import { Toaster } from "@/components/ui/sonner"
 
 
 
@@ -51,7 +52,8 @@ export default function RootLayout({
           >
         {children}
         </ThemeProvider>
-        
+        <Toaster/>
+
       </body>
     </html>
   );

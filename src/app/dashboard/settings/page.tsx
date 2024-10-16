@@ -35,18 +35,14 @@ export default function Page() {
           <div className="grid gap-6">
             <Card x-chunk="dashboard-04-chunk-1">
               <CardHeader>
-                <CardTitle>Store Name</CardTitle>
+                <CardTitle>Enable Authenticator</CardTitle>
                 <CardDescription>
-                  Used to identify your store in the marketplace.
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form>
-                  <Input placeholder="Store Name" />
-                </form>
               </CardContent>
               <CardFooter className="border-t px-6 py-4">
-                <Button>Save</Button>
+                <Button><Link href="#" >Go</Link></Button>
               </CardFooter>
             </Card>
             <Card x-chunk="dashboard-04-chunk-2">

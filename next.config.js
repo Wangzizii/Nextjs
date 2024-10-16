@@ -1,4 +1,5 @@
 module.exports = {
+  reactStrictMode: false,
   output: 'standalone',
     eslint: {
       // Warning: This allows production builds to successfully complete even if
@@ -6,7 +7,7 @@ module.exports = {
       ignoreDuringBuilds: true,
     },
     env: {
-        HOST:"http://nyp-zhixuan.us-east-1.elasticbeanstalk.com:8080"
+        HOST:"http://localhost:8080"
       },
       async redirects() {
         return [

@@ -7,6 +7,8 @@ import axios from "axios"
 import { useEffect, useRef } from "react"
 import { Rgwindow } from './rgwindow';
 import { useRouter} from 'next/navigation'
+import { toast } from "sonner"
+
 
 
 export function LoginForm() {
@@ -14,10 +16,9 @@ export function LoginForm() {
   var username:any=useRef(null)   
   var password:any=useRef(null)
 
-  useEffect(()=>{
 
-  })
-  const log=async ()=>{
+  const log=async (event:any)=>{
+    event.preventDefault();
     var account=new FormData()
     
     account.append("username",username.current.value)
@@ -26,16 +27,39 @@ export function LoginForm() {
     const r= await axios.post(process.env.HOST+"/user/login",account)
       console.log(r)
       if(r.data.code==200){
+        if(r.data.data.authenticator)
+        {
+          Router.push("/auth/mfa/"+r.data.data.username)
+        }
+        else{
         try {
-          typeof window !== "undefined" ? window.localStorage.setItem('token',r.data.data) : false
+          typeof window !== "undefined" ? window.localStorage.setItem('token',r.data.data.token) : false
           
         } catch (error) {
+           
+          toast("Failed", {
+            description:r.data.msg,
+            action: {
+              label: "OK",
+              onClick: () => console.log("OK"),
+            },
+          })
           
         }
-     
-       
+        Router.push('/auth/mfa/'+r.data.data.username)
+        }
 
-        Router.push('/dashboard/settings')
+      }
+      else{
+
+        toast("Failed", {
+          description:r.data.msg,
+          action: {
+            label: "OK",
+            onClick: () => console.log("OK"),
+          },
+        })
+          
       }
 }
   
@@ -55,17 +79,22 @@ export function LoginForm() {
             Enter your username below to login to your account
           </p>
         </div>
+        
         <div className="grid gap-4">
+        <form onSubmit={log}>
           <div className="grid gap-2">
             <Label htmlFor="email">Username</Label>
             <Input
               id="username"
               type="text"
               placeholder="Enter your username"
+              minLength={5}
+              maxLength={16}
               ref={username}
               required
             />
           </div>
+          
           <div className="grid gap-2">
             <div className="flex items-center">
               <Label htmlFor="password">Password</Label>
@@ -80,11 +109,14 @@ export function LoginForm() {
 
 
             </div>
-            <Input id="password" type="password" required  ref={password} />
+            <Input id="password" type="password"
+             required  minLength={5}
+              maxLength={16} ref={password} />
           </div>
-          <Button className="w-full" onClick={log} type="submit">
+          <Button className="w-full"  type="submit">
             Login
           </Button>
+          </form>
           <div className="w-full"> <Rgwindow></Rgwindow></div>
           
         </div>
