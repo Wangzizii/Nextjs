@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 import { Qrcodeimg } from './Qrcodeimg';
 import { cn } from "@/lib/utils"
 import { useRouter } from 'next/navigation';
@@ -46,9 +46,53 @@ export default function Page({params}:{params:{username:string}},{ className, ..
     })
 
     if(res.data.code==200){
+      toast("Welcome", {
+        description:res.data.msg,
+        action: {
+          label: "OK",
+          onClick: () => console.log("OK"),
+        },
+      })
     window.localStorage.setItem("token",res.data.data)
     
-    Router.push("/dashboard")
+    Router.push("/dashboard/settings")
+  }
+    else{
+      toast("Failed", {
+        description:res.data.msg,
+        action: {
+          label: "OK",
+          onClick: () => console.log("OK"),
+        },
+      })
+
+     
+      console.log(res.data)
+
+    
+
+    }
+    
+  }
+  const bind =async ()=>{
+    const res= await axios.post(process.env.HOST+"/user/twostep",{
+      username:params.username,
+      code:value
+    },{
+      headers:{
+        "Content-Type":"application/x-www-form-urlencoded"
+      }
+    })
+
+    if(res.data.code==200){    
+      toast("Welcome", {
+        description:res.data.msg,
+        action: {
+          label: "OK",
+          onClick: () => console.log("OK"),
+        },
+      })
+    Router.push("/dashboard/settings")
   }
     else{
       toast("Failed", {
@@ -77,6 +121,7 @@ export default function Page({params}:{params:{username:string}},{ className, ..
     <div className='flex flex-1 flex-col min-h-96 justify-center items-center ' >
 
 
+    <Suspense fallback={'<p>Loading</p>'}>
       {enable? 
       <Card  className={cn("min-w-96   w-1/3 flex h-1/2  flex-col items-center justify-center",className) } {...props}>
 
@@ -138,9 +183,10 @@ export default function Page({params}:{params:{username:string}},{ className, ..
       </CardContent>
       <CardFooter className="flex justify-between w-full">
         <Button variant="outline" ><Link href={'/dashboard/settings'}  >Not now</Link></Button>
-        <Button onClick={verify}>Verify</Button>
+        <Button onClick={bind}>Verify</Button>
       </CardFooter>
     </Card>}
+    </Suspense>
        
       
     </div>

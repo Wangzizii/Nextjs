@@ -29,6 +29,7 @@ export function LoginForm() {
       if(r.data.code==200){
         if(r.data.data.authenticator)
         {
+          
           Router.push("/auth/mfa/"+r.data.data.username)
         }
         else{
