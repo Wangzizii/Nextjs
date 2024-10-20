@@ -52,6 +52,13 @@ export default function Page({
         
       }
       else{
+        toast("Welcome", {
+          description:"",
+          action: {
+            label: "OK",
+            onClick: () => console.log("OK"),
+          },
+        })
         setLoading(true)
   
   

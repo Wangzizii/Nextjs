@@ -1,24 +1,45 @@
 "use client"
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { LoginForm } from './login'
 import axios from 'axios'
 import { useRouter } from 'next/navigation';
+
+
 export default function page() {
   const Router=useRouter()
-  useEffect(()=>{
-    axios.post(process.env.HOST+"/user/checklogin",{},{
-      headers:{
-        "Authorization": typeof window !== "undefined" ? window.localStorage.getItem('token') : false,
-      }
-    }).then(r=>{
-      const  islogin=r.data
-      console.log(islogin)
-      if(islogin.code==200){
-        Router.push("/dashboard/settings")
-      }
-    }).catch(e=>{
+  const [isLoading,setLoading]=useState(false)
+
+
+  const isLogin=async () => {
+    try {
+      const res=await axios.post(process.env.HOST+"/user/checklogin",{},{
+        headers:{
+          "Authorization": typeof window !== "undefined" ? window.localStorage.getItem('token') : false,
+        }
+      })
   
-    })
+      if(res.data.code==200){
+        setLoading(true)
+        Router.push("/dashboard/settings")
+  
+      }
+      else{
+        setLoading(true)
+        return
+      }
+      
+    } catch (error) {
+
+      setLoading(true)
+
+      
+    }
+    
+    
+  }
+  useEffect(()=>{
+  
+   isLogin()
 
   },[])
   
@@ -28,10 +49,8 @@ export default function page() {
    <>
   <div className='w-full h-full lg:block' style={{height:'100vh'}}>
 
-    
-   <LoginForm>
-
-   </LoginForm>
+    {isLoading?<LoginForm></LoginForm>:"Loading..."}
+   
    </div>
     
    </>
