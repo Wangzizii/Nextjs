@@ -3,7 +3,7 @@ import Link from "next/link"
 import { CircleUser, Menu, Package2, Search } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-
+import { toast } from "sonner"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,36 +16,66 @@ import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { useRouter } from "next/navigation"
 import axios from "axios"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 export default function Page({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   const Router=useRouter()
+  const [isLoading,setLoading]=useState(false)
 
   const logout=()=>{
     localStorage.removeItem("token")
     Router.push("/login")
   }
 
+  const checklogin=async () => {
+    try {
+      const res=await axios.post(process.env.HOST+"/user/checklogin",{},{
+        headers:{
+          "Authorization":window.localStorage.getItem("token")
+        }
+      })
+      if(res.data.code!==200){
+        setLoading(true)
+        
+        toast("Please Login first", {
+          description:"",
+          action: {
+            label: "OK",
+            onClick: () => console.log("OK"),
+          },
+        })
+        Router.push("/login")
+  
+        
+      }
+      else{
+        setLoading(true)
+  
+  
+      }
+      
+    } catch (error) {
+      toast("Please Login first", {
+        description:"",
+        action: {
+          label: "OK",
+          onClick: () => console.log("OK"),
+        },
+      })
+      Router.push("/login")
+
+      
+    }
+    
+    
+  }
+
   useEffect(() => {
-    axios.post(process.env.HOST+"/user/checklogin",{},{
-      headers:{
-        "Authorization":window.localStorage.getItem("token")
-      }
-    }).then(r=>{
-      const  islogin=r.data
-      console.log(islogin)
-      if(islogin.code!=200){
-        Router.push("/login")
-      }
-      
-    }).catch(e=>{
-     
-        Router.push("/login")
-      
-    })
+    checklogin()
+    
   }, []);
  
 
@@ -167,7 +197,7 @@ export default function Page({
         </div>
       </header>
       <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
-      {children}
+      {isLoading?children:"Loading.."}
 
       </main>
 

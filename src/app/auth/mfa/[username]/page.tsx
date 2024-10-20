@@ -16,6 +16,8 @@ type CardProps = React.ComponentProps<typeof Card>
 export default function Page({params}:{params:{username:string}},{ className, ...props }: CardProps) {
   const [value, setValue] = React.useState("")
   const Router=useRouter();
+  const [isLoading,setLoading]=useState(false)
+
 
   const [enable,setEnable]=useState(false)
 
@@ -28,10 +30,10 @@ export default function Page({params}:{params:{username:string}},{ className, ..
         "Content-Type":'application/x-www-form-urlencoded'
       }
     })
-    console.log(params.username)
-    console.log(res.data)
+
 
     setEnable(res.data.data)
+    setLoading(true)
     
   }
 
@@ -121,8 +123,7 @@ export default function Page({params}:{params:{username:string}},{ className, ..
     <div className='flex flex-1 flex-col min-h-96 justify-center items-center ' >
 
 
-    <Suspense fallback={'<p>Loading</p>'}>
-      {enable? 
+      {isLoading?enable? 
       <Card  className={cn("min-w-96   w-1/3 flex h-1/2  flex-col items-center justify-center",className) } {...props}>
 
       <CardHeader>
@@ -151,7 +152,6 @@ export default function Page({params}:{params:{username:string}},{ className, ..
         <Button className='w-full' onClick={verify}>Verify</Button>
       </CardFooter>
       </Card>
-      
 
       :
       <Card className={cn("min-w-64   w-1/3 flex  flex-col items-center justify-center",className) } {...props} >
@@ -185,8 +185,7 @@ export default function Page({params}:{params:{username:string}},{ className, ..
         <Button variant="outline" ><Link href={'/dashboard/settings'}  >Not now</Link></Button>
         <Button onClick={bind}>Verify</Button>
       </CardFooter>
-    </Card>}
-    </Suspense>
+    </Card>:"Loading..."}
        
       
     </div>

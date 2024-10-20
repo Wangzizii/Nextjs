@@ -7,7 +7,8 @@ module.exports = {
       ignoreDuringBuilds: true,
     },
     env: {
-        HOST:"http://ec2-47-129-158-47.ap-southeast-1.compute.amazonaws.com:8080"
+        // HOST:"http://ec2-47-129-158-47.ap-southeast-1.compute.amazonaws.com:8080"
+        HOST:"http://localhost:8080"
       },
       async redirects() {
         return [

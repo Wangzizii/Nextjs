@@ -4,10 +4,12 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import axios from "axios"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Rgwindow } from './rgwindow';
 import { useRouter} from 'next/navigation'
 import { toast } from "sonner"
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from  "@/components/ui/dialog"
+import { DialogFooter, DialogHeader } from "@/components/ui/dialog"
 
 
 
@@ -15,7 +17,43 @@ export function LoginForm() {
   const Router=useRouter()
   var username:any=useRef(null)   
   var password:any=useRef(null)
+  const [open,setopen]=useState(false)
+  const findby:any=useRef(null)
 
+
+  const findpassword= async()=>{
+    console.log(findby.current.value)
+    const res=await axios.post(process.env.HOST+"/user/forget",{
+      username:findby.current.value
+    },{
+      headers:{
+        'Content-Type':'application/x-www-form-urlencoded'
+      }
+    })
+    if(res.data.code==200){
+      toast("Success", {
+        description:res.data.msg,
+        action: {
+          label: "OK",
+          onClick: () => console.log("OK"),
+        },
+      })
+      setopen(false)
+    }
+    else{
+      toast("Failed", {
+        description:res.data.msg,
+        action: {
+          label: "OK",
+          onClick: () => console.log("OK"),
+        },
+      })
+
+    }
+
+
+
+  }
 
   const log=async (event:any)=>{
     event.preventDefault();
@@ -114,6 +152,13 @@ export function LoginForm() {
              required  minLength={5}
               maxLength={16} ref={password} />
           </div>
+
+          <div>
+            <p  className="text-muted-foreground transition-colors hover:text-foreground" onClick={()=>{setopen(true)}}>
+              Forgot your password?
+            </p>
+
+          </div>
           <Button className="w-full"  type="submit">
             Login
           </Button>
@@ -133,6 +178,47 @@ export function LoginForm() {
         className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
       />
     </div>
+
+    <>
+      
+      <Dialog open={open} onOpenChange={setopen}>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Enter your username</DialogTitle>
+          <DialogDescription>
+          </DialogDescription>
+        </DialogHeader>
+        <>
+              
+              <div className="grid gap-4">
+  
+            <div className="grid gap-2">
+              <Label >Username</Label>
+              <Input
+                id="findusername"
+                placeholder="Enter your username"
+                minLength={5}
+                maxLength={15}
+                required
+                ref={findby}
+              />
+            </div>
+         
+  
+  
+            
+  
+          </div>
+
+          </>
+          <DialogFooter>
+          <Button  onClick={findpassword} >Send</Button>
+          </DialogFooter>
+
+    
+      </DialogContent>
+    </Dialog>
+    </>
   </div>
   )
 }

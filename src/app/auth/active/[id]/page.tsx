@@ -3,7 +3,6 @@
 import {
     AlertDialog,
     AlertDialogAction,
-    AlertDialogCancel,
     AlertDialogContent,
     AlertDialogDescription,
     AlertDialogFooter,
@@ -23,6 +22,7 @@ export default function Page({params}:{params:{id:string}}) {
 
   
     const Router=useRouter()
+    const [isLoading,setLoading]=useState(false)
 
     const [activeres,setactiveres]=useState(false)
     const [username,setusername]=useState("")
@@ -32,14 +32,18 @@ export default function Page({params}:{params:{id:string}}) {
       //  console.log(res.data)
        if(res.data.code==200){
         setactiveres(true)
+        setLoading(true)
         const i=setTimeout(() => {
-          Router.push(`/auth/mfa?username=${res.data.data}`)
+          Router.push(`/login`)
     
-        }, 1000);
+        }, 3000);
         return true
        }
        else{
+        setLoading(true)
+        console.log(res.data.data)
         if(res.data.data!=null){
+
         setusername(res.data.data)
 
         console.log(res.data)
@@ -81,24 +85,27 @@ export default function Page({params}:{params:{id:string}}) {
     
   return (
     <div className='text-center'>
-        
+
+    {isLoading?
+    activeres?
+    <p className='text-3xl font-bold'>Activation Success</p> :
+    <>
+    <p className='text-3xl font-bold'>Activation Failed!!</p>
+    <div>
     <p className='text-3xl font-bold'>
-    {activeres?"Activation Success":"Activation Failed!!"}
-    
+      Resend an Email?
     </p>
-    {activeres?"":<div>
-      <p className='text-3xl font-bold'>
-        Resend an Email?
-      </p>
-    <p className='text-3xl font-bold'>
-    <Button onClick={resend} >Click here</Button>
-    
-    </p>
-    <span>
-    or back to <Link className='text-muted-foreground transition-colors underline hover:text-foreground' href={'/login'}>login?</Link>
-    </span>
-    </div>}
-    
+  <p className='text-3xl font-bold'>
+  <Button onClick={resend} >Click here</Button>
+  
+  </p>
+  <span>
+  or back to <Link className='text-muted-foreground transition-colors underline hover:text-foreground' href={'/login'}>login?</Link>
+  </span>
+  </div>
+  </>
+    :"Loading..."
+    }
 
     <AlertDialog  open={alert} >
     <AlertDialogContent>
@@ -113,6 +120,7 @@ export default function Page({params}:{params:{id:string}}) {
       </AlertDialogFooter>
     </AlertDialogContent>
   </AlertDialog>
+       
       
     </div>
   )
