@@ -55,7 +55,7 @@ export default function Page({params}:{params:{username:string}},{ className, ..
           onClick: () => console.log("OK"),
         },
       })
-    window.localStorage.setItem("token",res.data.data)
+    window.localStorage.setItem("token","Bearer "+res.data.data)
     
     Router.push("/dashboard/settings")
   }

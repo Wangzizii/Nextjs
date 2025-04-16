@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 export  function  Qrcodeimg({username}:{username:string}) {
  const {Canvas} =useQRCode();
  const [secretLink, setSecretLink] = useState('1');
+ const [isLoading,setLoading]=useState(false)
 
  const getsecretlink= async () => {
   
@@ -15,6 +16,7 @@ export  function  Qrcodeimg({username}:{username:string}) {
   console.log(username)
   console.log(res)
   setSecretLink(res.data.data)
+  setLoading(true)
 }
 useEffect(()=>{
   getsecretlink()
@@ -25,7 +27,7 @@ useEffect(()=>{
  
   return (
     <div className='w-full justify-center flex'>
-       <Canvas 
+      {isLoading?<Canvas 
       text={secretLink}
       options={{
         errorCorrectionLevel: 'L',
@@ -37,7 +39,8 @@ useEffect(()=>{
           light: '#FFBF60FF',
         },
       }}
-    />
+    />:"Loading..."}
+       
     </div>
   );
 }

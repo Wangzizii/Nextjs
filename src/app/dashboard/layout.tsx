@@ -32,6 +32,7 @@ export default function Page({
 
   const checklogin=async () => {
     try {
+
       const res=await axios.post(process.env.HOST+"/user/checklogin",{},{
         headers:{
           "Authorization":window.localStorage.getItem("token")
@@ -47,9 +48,7 @@ export default function Page({
             onClick: () => console.log("OK"),
           },
         })
-        Router.push("/login")
-  
-        
+        Router.push("/login")     
       }
       else{
         toast("Welcome", {
@@ -60,10 +59,7 @@ export default function Page({
           },
         })
         setLoading(true)
-  
-  
-      }
-      
+      }   
     } catch (error) {
       toast("Please Login first", {
         description:"",
@@ -72,14 +68,9 @@ export default function Page({
           onClick: () => console.log("OK"),
         },
       })
-      Router.push("/login")
-
-      
-    }
-    
-    
+      Router.push("/login")     
+    }      
   }
-
   useEffect(() => {
     checklogin()
     
@@ -204,7 +195,7 @@ export default function Page({
         </div>
       </header>
       <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
-      {isLoading?children:"Loading.."}
+      {isLoading?children:"Loading..."}
 
       </main>
 

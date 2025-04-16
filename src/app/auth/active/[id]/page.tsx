@@ -8,7 +8,6 @@ import {
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
-    AlertDialogTrigger,
   } from "@/components/ui/alert-dialog"
 import { Button } from '@/components/ui/button'
 import axios from 'axios'
@@ -18,9 +17,6 @@ import { useEffect, useState } from 'react'
 
 
 export default function Page({params}:{params:{id:string}}) {
-
-
-  
     const Router=useRouter()
     const [isLoading,setLoading]=useState(false)
 

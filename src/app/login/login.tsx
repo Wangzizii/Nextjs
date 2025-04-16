@@ -24,6 +24,7 @@ export function LoginForm() {
 
   const findpassword= async()=>{
     console.log(findby.current.value)
+    console.log(process.env.HOST)
     const res=await axios.post(process.env.HOST+"/user/forget",{
       username:findby.current.value
     },{
@@ -73,7 +74,7 @@ export function LoginForm() {
         }
         else{
         try {
-          typeof window !== "undefined" ? window.localStorage.setItem('token',r.data.data.token) : false
+          typeof window !== "undefined" ? window.localStorage.setItem('token',"Bearer "+ r.data.data.token) : false
           
         } catch (error) {
            
